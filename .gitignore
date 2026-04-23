@@ -18,3 +18,4 @@ target/
 Thumbs.db
 
 *workspace
+docs/technical-design.txt

@@ -1,0 +1,132 @@
+[
+  {
+    "name": "single book from json and cost 50 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "50.00"
+  },
+  {
+    "name": "multiple books without discount and cost 150 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "150.00"
+  },
+  {
+    "name": "two distinct books with 5 percent discount and cost 95 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "95.00"
+  },
+  {
+    "name": "three distinct books with 10 percent discount and cost 135 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "135.00"
+  },
+  {
+    "name": "four distinct books with 20 percent discount and cost 160 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "160.00"
+  },
+  {
+    "name": "five distinct books with 25 percent discount and cost 187.50 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      },
+      {
+        "bookId": 5,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "187.50"
+  },
+  {
+    "name": "two copies of each of five distinct books should cost 320 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      },
+      {
+        "bookId": 4,
+        "quantity": 2
+      },
+      {
+        "bookId": 5,
+        "quantity": 2
+      }
+    ],
+    "expectedTotal": "320.00"
+  }
+]

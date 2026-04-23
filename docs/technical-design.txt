@@ -157,3 +157,65 @@ Basket DTOs:
 - UpdateBasketItemRequest
 - BasketItemResponse
 - BasketResponse
+
+
+Simple TDD Test Sequence
+
+We are building the pricing logic in small steps.
+
+Sequence followed till now:
+
+1. Add a test for 1 book
+- Input: 1 book with quantity 1
+- Expected result: 50 EUR
+
+2. Add a test for multiple books without discount
+- Input: book 1 quantity 2, book 2 quantity 1
+- Expected result: 150 EUR
+
+3. Add a test for 2 distinct books
+- Input: 2 different books, quantity 1 each
+- Expected result: 95 EUR
+- Rule added: 5 percent discount
+
+4. Add a test for 3 distinct books
+- Input: 3 different books, quantity 1 each
+- Expected result: 135 EUR
+- Rule added: 10 percent discount
+
+5. Add a test for 4 distinct books
+- Input: 4 different books, quantity 1 each
+- Expected result: 160 EUR
+- Rule added: 20 percent discount
+
+6. Add a test for 5 distinct books
+- Input: 5 different books, quantity 1 each
+- Expected result: 187.50 EUR
+- Rule added: 25 percent discount
+
+7. Add failure case for invalid quantity
+- Input: any book with quantity 0
+- Expected result: validation error
+
+8. Add failure case for complex basket
+- Input: 2 copies of each of 5 distinct books
+- Expected result: 320 EUR
+- This test is important because it needs better grouping logic
+
+
+Way Forward In Simple Language
+
+1. First fix the quantity validation failure
+- Quantity should not be 0 or negative
+
+2. Then fix the 320 EUR pricing case
+- Current logic only works for simple distinct groups
+- Next implementation needs grouping of books into sets
+
+3. After pricing is stable, move to next layers
+- Book service
+- Basket service
+- User service
+- Controllers
+- Database
+- Authentication
