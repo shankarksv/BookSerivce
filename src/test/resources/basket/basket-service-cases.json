@@ -1,0 +1,80 @@
+[
+  {
+    "name": "basket_get_empty_when_no_active_basket",
+    "type": "get",
+    "userId": 1,
+    "input": {
+      "basketId": 10,
+      "hasActiveBasket": false
+    },
+    "expected": {
+      "itemsCount": 0
+    }
+  },
+  {
+    "name": "basket_add_new_item",
+    "type": "add",
+    "userId": 2,
+    "input": {
+      "basketId": 20,
+      "bookId": 3,
+      "bookTitle": "DDD",
+      "quantity": 2,
+      "existingQuantity": 0,
+      "itemExists": false
+    },
+    "expected": {
+      "itemsCount": 1,
+      "firstItemQuantity": 2
+    }
+  },
+  {
+    "name": "basket_add_existing_item_quantity_increment",
+    "type": "add",
+    "userId": 4,
+    "input": {
+      "basketId": 40,
+      "bookId": 8,
+      "bookTitle": "Refactoring",
+      "quantity": 3,
+      "existingQuantity": 1,
+      "itemExists": true
+    },
+    "expected": {
+      "itemsCount": 1,
+      "firstItemQuantity": 4
+    }
+  },
+  {
+    "name": "basket_update_item_quantity",
+    "type": "update",
+    "userId": 6,
+    "input": {
+      "basketId": 60,
+      "bookId": 12,
+      "bookTitle": "XP",
+      "quantity": 5,
+      "existingQuantity": 2,
+      "itemExists": true
+    },
+    "expected": {
+      "itemsCount": 1,
+      "firstItemQuantity": 5
+    }
+  },
+  {
+    "name": "basket_update_missing_item_not_found",
+    "type": "update",
+    "userId": 7,
+    "input": {
+      "basketId": 70,
+      "bookId": 99,
+      "bookTitle": "Missing",
+      "quantity": 1,
+      "itemExists": false
+    },
+    "expected": {
+      "errorStatus": 404
+    }
+  }
+]
