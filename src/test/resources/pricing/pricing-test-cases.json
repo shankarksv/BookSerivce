@@ -144,7 +144,7 @@
     "expectedTotal": "195.00"
   },
   {
-    "name": "two copies of three books and one copy of two books should cost 322.50 EUR",
+    "name": "two copies of three books and one copy of two books should cost 320 EUR",
     "items": [
       {
         "bookId": 1,
@@ -167,7 +167,7 @@
         "quantity": 1
       }
     ],
-    "expectedTotal": "322.50"
+    "expectedTotal": "320.00"
   },
   {
     "name": "empty basket from json should cost 0 EUR",
@@ -357,7 +357,7 @@
     "expectedTotal": "937500.00"
   },
   {
-    "name": "5000 4000 3000 2000 1000 copies across five books should cost 627500 EUR",
+    "name": "5000 4000 3000 2000 1000 copies across five books should cost 625000 EUR",
     "items": [
       {
         "bookId": 1,
@@ -380,7 +380,7 @@
         "quantity": 1000
       }
     ],
-    "expectedTotal": "627500.00"
+    "expectedTotal": "625000.00"
   },
   {
     "name": "5000 5000 1 1 1 copies across five books should cost 475092.50 EUR",

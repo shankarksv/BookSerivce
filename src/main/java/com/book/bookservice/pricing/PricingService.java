@@ -68,13 +68,11 @@ public class PricingService {
         List<Integer> remainingCounts = new ArrayList<>(quantitiesByBook.values());
         remainingCounts.sort(Integer::compareTo);
 
-        BigDecimal total = BigDecimal.ZERO;
+        Map<Integer, Integer> groupCountBySize = new LinkedHashMap<>();
         while (!remainingCounts.isEmpty()) {
             int distinctBooksInGroup = remainingCounts.size();
             int batchCount = remainingCounts.get(0);
-            BigDecimal groupedPrice = calculateGroupPrice(distinctBooksInGroup)
-                    .multiply(BigDecimal.valueOf(batchCount));
-            total = total.add(groupedPrice);
+            groupCountBySize.merge(distinctBooksInGroup, batchCount, Integer::sum);
 
             List<Integer> nextCounts = new ArrayList<>();
             for (int count : remainingCounts) {
@@ -86,7 +84,30 @@ public class PricingService {
             remainingCounts = nextCounts;
         }
 
+        rebalanceForOptimalDiscount(groupCountBySize);
+
+        BigDecimal total = BigDecimal.ZERO;
+        for (Map.Entry<Integer, Integer> entry : groupCountBySize.entrySet()) {
+            BigDecimal groupedPrice = calculateGroupPrice(entry.getKey())
+                    .multiply(BigDecimal.valueOf(entry.getValue()));
+            total = total.add(groupedPrice);
+        }
+
         return total;
+    }
+
+    private void rebalanceForOptimalDiscount(Map<Integer, Integer> groupCountBySize) {
+        int fiveBookGroups = groupCountBySize.getOrDefault(5, 0);
+        int threeBookGroups = groupCountBySize.getOrDefault(3, 0);
+        int rebalanceCount = Math.min(fiveBookGroups, threeBookGroups);
+
+        if (rebalanceCount == 0) {
+            return;
+        }
+
+        groupCountBySize.put(5, fiveBookGroups - rebalanceCount);
+        groupCountBySize.put(3, threeBookGroups - rebalanceCount);
+        groupCountBySize.merge(4, rebalanceCount * 2, Integer::sum);
     }
 
     private boolean matchesCurrentRepeatedFiveBookExample(List<BasketItemLine> items) {
