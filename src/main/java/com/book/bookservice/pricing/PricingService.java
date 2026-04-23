@@ -2,6 +2,7 @@ package com.book.bookservice.pricing;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,21 +34,7 @@ public class PricingService {
                         LinkedHashMap::new
                 ));
 
-        BigDecimal total = BigDecimal.ZERO;
-        while (hasRemainingQuantities(quantitiesByBook)) {
-            int distinctBooksInGroup = 0;
-
-            for (Map.Entry<Long, Integer> entry : quantitiesByBook.entrySet()) {
-                if (entry.getValue() > 0) {
-                    entry.setValue(entry.getValue() - 1);
-                    distinctBooksInGroup++;
-                }
-            }
-
-            total = total.add(calculateGroupPrice(distinctBooksInGroup));
-        }
-
-        return total.setScale(2, RoundingMode.HALF_UP);
+        return calculateLayeredTotal(quantitiesByBook).setScale(2, RoundingMode.HALF_UP);
     }
 
     private void validateItems(List<BasketItemLine> items) {
@@ -70,15 +57,36 @@ public class PricingService {
         }
     }
 
-    private boolean hasRemainingQuantities(Map<Long, Integer> quantitiesByBook) {
-        return quantitiesByBook.values().stream().anyMatch(quantity -> quantity > 0);
-    }
-
     private BigDecimal calculateGroupPrice(int distinctBooksInGroup) {
         BigDecimal basePrice = BOOK_PRICE.multiply(BigDecimal.valueOf(distinctBooksInGroup));
         BigDecimal discountPercentage = DISCOUNT_BY_DISTINCT_BOOKS.getOrDefault(distinctBooksInGroup, BigDecimal.ZERO);
 
         return basePrice.subtract(basePrice.multiply(discountPercentage));
+    }
+
+    private BigDecimal calculateLayeredTotal(Map<Long, Integer> quantitiesByBook) {
+        List<Integer> remainingCounts = new ArrayList<>(quantitiesByBook.values());
+        remainingCounts.sort(Integer::compareTo);
+
+        BigDecimal total = BigDecimal.ZERO;
+        while (!remainingCounts.isEmpty()) {
+            int distinctBooksInGroup = remainingCounts.size();
+            int batchCount = remainingCounts.get(0);
+            BigDecimal groupedPrice = calculateGroupPrice(distinctBooksInGroup)
+                    .multiply(BigDecimal.valueOf(batchCount));
+            total = total.add(groupedPrice);
+
+            List<Integer> nextCounts = new ArrayList<>();
+            for (int count : remainingCounts) {
+                int reduced = count - batchCount;
+                if (reduced > 0) {
+                    nextCounts.add(reduced);
+                }
+            }
+            remainingCounts = nextCounts;
+        }
+
+        return total;
     }
 
     private boolean matchesCurrentRepeatedFiveBookExample(List<BasketItemLine> items) {
