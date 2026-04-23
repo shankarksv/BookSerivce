@@ -242,6 +242,13 @@ Iteration 9
 Iteration 10
 - 3 copies of one book and 1 copy of another book should cost 195 EUR
 
+Iteration 11
+- basket line with missing bookId should fail
+- duplicate basket lines for same bookId should fail
+
+Iteration 12
+- 2 copies of 3 books and 1 copy of 2 books should cost 322.50 EUR
+
 
 Way Forward In Simple Language
 
@@ -287,3 +294,12 @@ Current test count
 - total tests run: 16
 - passed: 13
 - failed: 3
+
+Iteration 1
+Right now the latest failing cases are:
+
+missing bookId
+duplicate bookId lines
+3 copies of one book and 1 copy of another => expected 195.00
+2 copies of 3 books and 1 copy of 2 books => expected 322.50
+

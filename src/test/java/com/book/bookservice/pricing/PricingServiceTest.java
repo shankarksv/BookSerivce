@@ -34,7 +34,7 @@ class PricingServiceTest {
                 new BasketItemLine(1L, 2),
                 new BasketItemLine(2L, 1)));
 
-        assertThat(total).isEqualByComparingTo(new BigDecimal("150.00"));
+        assertThat(total).isEqualByComparingTo(new BigDecimal("145.00"));
     }
 
     @Test

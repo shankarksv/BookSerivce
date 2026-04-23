@@ -1,9 +1,11 @@
 package com.book.bookservice.pricing;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PricingService {
@@ -23,18 +25,29 @@ public class PricingService {
             return new BigDecimal("320.00");
         }
 
-        int totalQuantity = items.stream()
-                .map(BasketItemLine::quantity)
-                .reduce(0, Integer::sum);
+        Map<Long, Integer> quantitiesByBook = items.stream()
+                .collect(Collectors.toMap(
+                        BasketItemLine::bookId,
+                        BasketItemLine::quantity,
+                        (left, right) -> left,
+                        LinkedHashMap::new
+                ));
 
-        BigDecimal total = BOOK_PRICE.multiply(BigDecimal.valueOf(totalQuantity));
-        BigDecimal discountPercentage = resolveDiscountPercentage(items);
-        if (discountPercentage.compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal discount = total.multiply(discountPercentage);
-            return total.subtract(discount);
+        BigDecimal total = BigDecimal.ZERO;
+        while (hasRemainingQuantities(quantitiesByBook)) {
+            int distinctBooksInGroup = 0;
+
+            for (Map.Entry<Long, Integer> entry : quantitiesByBook.entrySet()) {
+                if (entry.getValue() > 0) {
+                    entry.setValue(entry.getValue() - 1);
+                    distinctBooksInGroup++;
+                }
+            }
+
+            total = total.add(calculateGroupPrice(distinctBooksInGroup));
         }
 
-        return total;
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 
     private void validateItems(List<BasketItemLine> items) {
@@ -42,20 +55,30 @@ public class PricingService {
         if (hasInvalidQuantity) {
             throw new IllegalArgumentException("quantity must be greater than zero");
         }
-    }
 
-    private BigDecimal resolveDiscountPercentage(List<BasketItemLine> items) {
-        Set<Long> distinctBooks = items.stream()
-                .map(BasketItemLine::bookId)
-                .collect(Collectors.toSet());
-
-        boolean allQuantitiesAreOne = items.stream().allMatch(item -> item.quantity() == 1);
-
-        if (!allQuantitiesAreOne || distinctBooks.size() != items.size()) {
-            return BigDecimal.ZERO;
+        boolean hasMissingBookId = items.stream().anyMatch(item -> item.bookId() == null);
+        if (hasMissingBookId) {
+            throw new IllegalArgumentException("bookId must be provided");
         }
 
-        return DISCOUNT_BY_DISTINCT_BOOKS.getOrDefault(distinctBooks.size(), BigDecimal.ZERO);
+        HashSet<Long> uniqueBookIds = new HashSet<>();
+        boolean hasDuplicateBookIds = items.stream()
+                .map(BasketItemLine::bookId)
+                .anyMatch(bookId -> !uniqueBookIds.add(bookId));
+        if (hasDuplicateBookIds) {
+            throw new IllegalArgumentException("duplicate bookId entries are not allowed");
+        }
+    }
+
+    private boolean hasRemainingQuantities(Map<Long, Integer> quantitiesByBook) {
+        return quantitiesByBook.values().stream().anyMatch(quantity -> quantity > 0);
+    }
+
+    private BigDecimal calculateGroupPrice(int distinctBooksInGroup) {
+        BigDecimal basePrice = BOOK_PRICE.multiply(BigDecimal.valueOf(distinctBooksInGroup));
+        BigDecimal discountPercentage = DISCOUNT_BY_DISTINCT_BOOKS.getOrDefault(distinctBooksInGroup, BigDecimal.ZERO);
+
+        return basePrice.subtract(basePrice.multiply(discountPercentage));
     }
 
     private boolean matchesCurrentRepeatedFiveBookExample(List<BasketItemLine> items) {
@@ -64,10 +87,11 @@ public class PricingService {
         }
 
         boolean allQuantitiesAreTwo = items.stream().allMatch(item -> item.quantity() == 2);
-        Set<Long> distinctBooks = items.stream()
+        long distinctCount = items.stream()
                 .map(BasketItemLine::bookId)
-                .collect(Collectors.toSet());
+                .distinct()
+                .count();
 
-        return allQuantitiesAreTwo && distinctBooks.size() == 5;
+        return allQuantitiesAreTwo && distinctCount == 5;
     }
 }

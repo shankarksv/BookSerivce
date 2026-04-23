@@ -10,7 +10,7 @@
     "expectedTotal": "50.00"
   },
   {
-    "name": "multiple books without discount and cost 150 EUR",
+    "name": "two copies of one book and one copy of another book should cost 145 EUR",
     "items": [
       {
         "bookId": 1,
@@ -21,7 +21,7 @@
         "quantity": 1
       }
     ],
-    "expectedTotal": "150.00"
+    "expectedTotal": "145.00"
   },
   {
     "name": "two distinct books with 5 percent discount and cost 95 EUR",
