@@ -7,13 +7,15 @@
       "title": "  Clean Code  ",
       "author": "  Robert C. Martin  ",
       "year": 2008,
-      "description": "pragmatic coding"
+      "description": "pragmatic coding",
+      "stockQuantity": 25
     },
     "expected": {
       "title": "Clean Code",
       "author": "Robert C. Martin",
       "year": 2008,
-      "price": "50.00"
+      "price": "50.00",
+      "stockQuantity": 25
     }
   },
   {
@@ -25,18 +27,21 @@
       "author": "Author",
       "year": 2001,
       "description": "desc",
-      "price": "50.00"
+      "price": "50.00",
+      "stockQuantity": 8
     },
     "request": {
       "title": "  New Title ",
       "author": " New Author ",
       "year": 2005,
-      "description": "new desc"
+      "description": "new desc",
+      "stockQuantity": 13
     },
     "expected": {
       "title": "New Title",
       "author": "New Author",
-      "year": 2005
+      "year": 2005,
+      "stockQuantity": 13
     }
   },
   {

@@ -86,11 +86,21 @@ class BasketServiceTest {
 
     private void runAddCase(BasketCase c) {
         Basket basket = basketForCase(c);
-        Book book = bookForCase(c.input().bookId(), c.input().bookTitle());
+        Book book = bookForCase(c.input().bookId(), c.input().bookTitle(), c.input().stockQuantity());
         when(basketRepository.findByUserIdAndStatus(c.userId(), BasketStatus.ACTIVE)).thenReturn(Optional.of(basket));
         when(bookRepository.findById(c.input().bookId())).thenReturn(Optional.of(book));
         when(basketItemRepository.findByBasketIdAndBookId(c.input().basketId(), c.input().bookId()))
                 .thenReturn(Optional.ofNullable(existingItemForCase(c, basket, book)));
+
+        if (c.expected().errorStatus() != null) {
+            assertThatThrownBy(() -> basketService.addBookToBasket(
+                    c.userId(),
+                    new AddBasketItemRequest(c.input().bookId(), c.input().quantity())))
+                    .isInstanceOf(ResponseStatusException.class)
+                    .matches(ex -> ((ResponseStatusException) ex).getStatusCode() == HttpStatus.valueOf(c.expected().errorStatus()));
+            verify(basketRepository, never()).save(basket);
+            return;
+        }
 
         BasketResponse response = basketService.addBookToBasket(
                 c.userId(),
@@ -107,7 +117,7 @@ class BasketServiceTest {
 
         BasketItem existing = null;
         if (Boolean.TRUE.equals(c.input().itemExists())) {
-            Book book = bookForCase(c.input().bookId(), c.input().bookTitle());
+            Book book = bookForCase(c.input().bookId(), c.input().bookTitle(), c.input().stockQuantity());
             existing = new BasketItem(basket, book, c.input().existingQuantity());
             basket.getItems().add(existing);
             when(basketItemRepository.findByBasketIdAndBookId(c.input().basketId(), c.input().bookId()))
@@ -142,14 +152,15 @@ class BasketServiceTest {
         Basket basket = new Basket(c.userId(), BasketStatus.ACTIVE);
         ReflectionTestUtils.setField(basket, "id", c.input().basketId());
         if (Boolean.TRUE.equals(c.input().hasActiveBasketItem())) {
-            Book existingBook = bookForCase(c.input().bookId(), c.input().bookTitle());
+            Book existingBook = bookForCase(c.input().bookId(), c.input().bookTitle(), c.input().stockQuantity());
             basket.getItems().add(new BasketItem(basket, existingBook, c.input().existingQuantity()));
         }
         return basket;
     }
 
-    private Book bookForCase(Long bookId, String title) {
-        Book book = new Book(title, "Test Author", 2020, "test description", new BigDecimal("50.00"));
+    private Book bookForCase(Long bookId, String title, Integer stockQuantity) {
+        int quantity = stockQuantity == null ? 100 : stockQuantity;
+        Book book = new Book(title, "Test Author", 2020, "test description", new BigDecimal("50.00"), quantity);
         ReflectionTestUtils.setField(book, "id", bookId);
         return book;
     }
@@ -190,6 +201,7 @@ class BasketServiceTest {
             String bookTitle,
             Integer quantity,
             Integer existingQuantity,
+            Integer stockQuantity,
             Boolean hasActiveBasket,
             Boolean hasActiveBasketItem,
             Boolean itemExists

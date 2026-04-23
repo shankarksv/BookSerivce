@@ -45,7 +45,8 @@ public class BookService {
                 request.author().trim(),
                 request.year(),
                 request.description(),
-                DEFAULT_PRICE
+                DEFAULT_PRICE,
+                request.stockQuantity()
         );
         return toResponse(bookRepository.save(book));
     }
@@ -56,6 +57,7 @@ public class BookService {
         book.setAuthor(request.author().trim());
         book.setYear(request.year());
         book.setDescription(request.description());
+        book.setStockQuantity(request.stockQuantity());
         return toResponse(bookRepository.save(book));
     }
 
@@ -84,7 +86,8 @@ public class BookService {
                 book.getAuthor(),
                 book.getYear(),
                 book.getDescription(),
-                book.getPrice()
+                book.getPrice(),
+                book.getStockQuantity()
         );
     }
 }

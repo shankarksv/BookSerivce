@@ -8,6 +8,7 @@ public record CreateBookRequest(
         @NotBlank String title,
         @NotBlank String author,
         @NotNull @Positive Integer year,
-        String description
+        String description,
+        @NotNull @Positive Integer stockQuantity
 ) {
 }

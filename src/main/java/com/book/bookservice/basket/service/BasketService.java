@@ -48,7 +48,9 @@ public class BasketService {
                     return newItem;
                 });
 
-        item.setQuantity(item.getQuantity() + request.quantity());
+        int targetQuantity = item.getQuantity() + request.quantity();
+        validateStockAvailability(book, targetQuantity);
+        item.setQuantity(targetQuantity);
         basketRepository.save(basket);
         return toResponse(basket);
     }
@@ -64,6 +66,7 @@ public class BasketService {
         Basket basket = getOrCreateActiveBasket(userId);
         BasketItem item = basketItemRepository.findByBasketIdAndBookId(basket.getId(), bookId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "basket item not found"));
+        validateStockAvailability(item.getBook(), request.quantity());
         item.setQuantity(request.quantity());
         basketRepository.save(basket);
         return toResponse(basket);
@@ -92,6 +95,14 @@ public class BasketService {
     private Book getBookById(Long bookId) {
         return bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
+    }
+
+    private void validateStockAvailability(Book book, int targetQuantity) {
+        if (targetQuantity > book.getStockQuantity()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "requested quantity exceeds available stock for bookId=" + book.getId());
+        }
     }
 
     private BasketResponse toResponse(Basket basket) {

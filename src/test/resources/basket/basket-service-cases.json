@@ -20,6 +20,7 @@
       "bookId": 3,
       "bookTitle": "DDD",
       "quantity": 2,
+      "stockQuantity": 10,
       "existingQuantity": 0,
       "itemExists": false
     },
@@ -37,6 +38,7 @@
       "bookId": 8,
       "bookTitle": "Refactoring",
       "quantity": 3,
+      "stockQuantity": 10,
       "existingQuantity": 1,
       "itemExists": true
     },
@@ -54,6 +56,7 @@
       "bookId": 12,
       "bookTitle": "XP",
       "quantity": 5,
+      "stockQuantity": 10,
       "existingQuantity": 2,
       "itemExists": true
     },
@@ -71,10 +74,62 @@
       "bookId": 99,
       "bookTitle": "Missing",
       "quantity": 1,
+      "stockQuantity": 10,
       "itemExists": false
     },
     "expected": {
       "errorStatus": 404
+    }
+  },
+  {
+    "name": "basket_add_exceeds_stock_conflict",
+    "type": "add",
+    "userId": 8,
+    "input": {
+      "basketId": 80,
+      "bookId": 15,
+      "bookTitle": "Low Stock",
+      "quantity": 4,
+      "stockQuantity": 3,
+      "existingQuantity": 0,
+      "itemExists": false
+    },
+    "expected": {
+      "errorStatus": 409
+    }
+  },
+  {
+    "name": "basket_add_increment_exceeds_stock_conflict",
+    "type": "add",
+    "userId": 9,
+    "input": {
+      "basketId": 90,
+      "bookId": 16,
+      "bookTitle": "Low Stock Existing",
+      "quantity": 2,
+      "stockQuantity": 5,
+      "existingQuantity": 4,
+      "itemExists": true
+    },
+    "expected": {
+      "errorStatus": 409
+    }
+  },
+  {
+    "name": "basket_update_exceeds_stock_conflict",
+    "type": "update",
+    "userId": 10,
+    "input": {
+      "basketId": 100,
+      "bookId": 17,
+      "bookTitle": "Update Low Stock",
+      "quantity": 8,
+      "stockQuantity": 6,
+      "existingQuantity": 1,
+      "itemExists": true
+    },
+    "expected": {
+      "errorStatus": 409
     }
   }
 ]

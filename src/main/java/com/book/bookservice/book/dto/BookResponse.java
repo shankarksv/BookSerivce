@@ -8,6 +8,7 @@ public record BookResponse(
         String author,
         Integer year,
         String description,
-        BigDecimal price
+        BigDecimal price,
+        Integer stockQuantity
 ) {
 }

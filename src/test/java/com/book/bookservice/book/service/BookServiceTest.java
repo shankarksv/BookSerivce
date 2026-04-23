@@ -76,13 +76,15 @@ class BookServiceTest {
                 c.request().title(),
                 c.request().author(),
                 c.request().year(),
-                c.request().description()));
+                c.request().description(),
+                c.request().stockQuantity()));
 
         assertThat(response.id()).isEqualTo(c.savedId());
         assertThat(response.title()).isEqualTo(c.expected().title());
         assertThat(response.author()).isEqualTo(c.expected().author());
         assertThat(response.year()).isEqualTo(c.expected().year());
         assertThat(response.price()).isEqualByComparingTo(c.expected().price());
+        assertThat(response.stockQuantity()).isEqualTo(c.expected().stockQuantity());
     }
 
     private void runUpdateCase(BookCase c) {
@@ -91,7 +93,8 @@ class BookServiceTest {
                 c.existing().author(),
                 c.existing().year(),
                 c.existing().description(),
-                new BigDecimal(c.existing().price()));
+                new BigDecimal(c.existing().price()),
+                c.existing().stockQuantity());
         ReflectionTestUtils.setField(existing, "id", c.bookId());
         when(bookRepository.findById(c.bookId())).thenReturn(Optional.of(existing));
         when(bookRepository.save(existing)).thenReturn(existing);
@@ -100,12 +103,14 @@ class BookServiceTest {
                 c.request().title(),
                 c.request().author(),
                 c.request().year(),
-                c.request().description()));
+                c.request().description(),
+                c.request().stockQuantity()));
 
         assertThat(response.id()).isEqualTo(c.bookId());
         assertThat(response.title()).isEqualTo(c.expected().title());
         assertThat(response.author()).isEqualTo(c.expected().author());
         assertThat(response.year()).isEqualTo(c.expected().year());
+        assertThat(response.stockQuantity()).isEqualTo(c.expected().stockQuantity());
     }
 
     private void runDeleteCase(BookCase c) {
@@ -160,7 +165,7 @@ class BookServiceTest {
         }
     }
 
-    record BookPayload(String title, String author, Integer year, String description, String price) {
+    record BookPayload(String title, String author, Integer year, String description, String price, Integer stockQuantity) {
     }
 
     record DeletePayload(Boolean existsInInventory, Boolean existsInActiveBasket) {
@@ -171,6 +176,7 @@ class BookServiceTest {
             String author,
             Integer year,
             String price,
+            Integer stockQuantity,
             Integer errorStatus,
             Integer deleteCallCount
     ) {

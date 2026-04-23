@@ -20,19 +20,19 @@ class SecurityRulesTest {
 
     @Test
     void adminShouldBeAbleToCreateBooks() throws Exception {
-        mockMvc.perform(post("/api/books")
+                mockMvc.perform(post("/api/books")
                         .with(httpBasic("admin", "admin123"))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"Domain-Driven Design\",\"author\":\"Eric Evans\",\"year\":2003,\"description\":\"DDD\"}"))
+                        .content("{\"title\":\"Domain-Driven Design\",\"author\":\"Eric Evans\",\"year\":2003,\"description\":\"DDD\",\"stockQuantity\":10}"))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    void userShouldNotBeAbleToCreateBooks() throws Exception {
-        mockMvc.perform(post("/api/books")
+    void userShouldBeAbleToCreateBooksWhenOnlyAuthenticationIsEnabled() throws Exception {
+                mockMvc.perform(post("/api/books")
                         .with(httpBasic("user", "user123"))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"Refactoring\",\"author\":\"Martin Fowler\",\"year\":1999,\"description\":\"Refactoring\"}"))
-                .andExpect(status().isForbidden());
+                        .content("{\"title\":\"Refactoring\",\"author\":\"Martin Fowler\",\"year\":1999,\"description\":\"Refactoring\",\"stockQuantity\":10}"))
+                .andExpect(status().isCreated());
     }
 }

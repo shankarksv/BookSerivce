@@ -32,15 +32,19 @@ public class Book {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    @Column(name = "stock_quantity", nullable = false)
+    private Integer stockQuantity;
+
     protected Book() {
     }
 
-    public Book(String title, String author, Integer year, String description, BigDecimal price) {
+    public Book(String title, String author, Integer year, String description, BigDecimal price, Integer stockQuantity) {
         this.title = title;
         this.author = author;
         this.year = year;
         this.description = description;
         this.price = price;
+        this.stockQuantity = stockQuantity;
     }
 
     public Long getId() {
@@ -85,5 +89,13 @@ public class Book {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }

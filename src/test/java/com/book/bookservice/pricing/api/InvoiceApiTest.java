@@ -49,7 +49,8 @@ class InvoiceApiTest {
                 "Martin Fowler",
                 1999,
                 "Refactoring",
-                new BigDecimal("50.00")
+                new BigDecimal("50.00"),
+                100
         ));
 
         Basket basket = new Basket(2L, BasketStatus.ACTIVE);
