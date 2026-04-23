@@ -54,6 +54,38 @@ class PricingServiceTest {
                 .hasMessageContaining("quantity");
     }
 
+    @Test
+    void shouldRejectNegativeQuantity() {
+        assertThatThrownBy(() -> pricingService.calculateTotal(List.of(
+                new BasketItemLine(1L, -1))))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("quantity");
+    }
+
+    @Test
+    void shouldReturnZeroForEmptyBasket() {
+        BigDecimal total = pricingService.calculateTotal(List.of());
+
+        assertThat(total).isEqualByComparingTo("0.00");
+    }
+
+    @Test
+    void shouldRejectNullQuantityEntryInBasket() {
+        assertThatThrownBy(() -> pricingService.calculateTotal(List.of(
+                new BasketItemLine(null, 1))))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("bookId");
+    }
+
+    @Test
+    void shouldRejectDuplicateBookLinesForSameBookId() {
+        assertThatThrownBy(() -> pricingService.calculateTotal(List.of(
+                new BasketItemLine(1L, 1),
+                new BasketItemLine(1L, 2))))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("duplicate");
+    }
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("pricingCasesFromJson")
     void TestCalculatePriceFromJsonInput(PricingTestCase testCase) {

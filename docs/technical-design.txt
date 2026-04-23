@@ -203,6 +203,46 @@ Sequence followed till now:
 - This test is important because it needs better grouping logic
 
 
+Iteration-wise Test Cases Added
+
+Iteration 1
+- 1 book should cost 50 EUR
+- multiple books without discount should cost 150 EUR
+
+Iteration 2
+- 2 distinct books should cost 95 EUR
+
+Iteration 3
+- JSON based pricing test input support added
+- single book from JSON = 50 EUR
+- mixed basket from JSON = 150 EUR
+- 2 distinct books from JSON = 95 EUR
+
+Iteration 4
+- 3 distinct books = 135 EUR
+
+Iteration 5
+- 4 distinct books = 160 EUR
+
+Iteration 6
+- 5 distinct books = 187.50 EUR
+
+Iteration 7
+- zero quantity should fail
+- 2 copies of each of 5 distinct books should cost 320 EUR
+
+Iteration 8
+- negative quantity should fail
+- empty basket should return 0 EUR
+
+Iteration 9
+- basket line with missing bookId should fail
+- duplicate basket lines for same bookId should fail
+
+Iteration 10
+- 3 copies of one book and 1 copy of another book should cost 195 EUR
+
+
 Way Forward In Simple Language
 
 1. First fix the quantity validation failure
@@ -219,3 +259,31 @@ Way Forward In Simple Language
 - Controllers
 - Database
 - Authentication
+
+
+Latest Test Run Status
+
+Passed test cases
+- 1 book should cost 50 EUR
+- multiple books without discount should cost 150 EUR
+- 2 distinct books should cost 95 EUR
+- zero quantity should fail
+- negative quantity should fail
+- empty basket should return 0 EUR
+- single book from JSON = 50 EUR
+- mixed basket from JSON = 150 EUR
+- 2 distinct books from JSON = 95 EUR
+- 3 distinct books from JSON = 135 EUR
+- 4 distinct books from JSON = 160 EUR
+- 5 distinct books from JSON = 187.50 EUR
+- 2 copies of each of 5 distinct books should cost 320 EUR
+
+Failed test cases
+- basket line with missing bookId should fail
+- duplicate basket lines for same bookId should fail
+- 3 copies of one book and 1 copy of another book should cost 195 EUR
+
+Current test count
+- total tests run: 16
+- passed: 13
+- failed: 3
