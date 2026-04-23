@@ -142,5 +142,31 @@
       }
     ],
     "expectedTotal": "195.00"
+  },
+  {
+    "name": "two copies of three books and one copy of two books should cost 322.50 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      },
+      {
+        "bookId": 5,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "322.50"
   }
 ]
