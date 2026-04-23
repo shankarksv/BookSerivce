@@ -1,0 +1,517 @@
+[
+  {
+    "name": "single book from json and cost 50 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "50.00"
+  },
+  {
+    "name": "two copies of one book and one copy of another book should cost 145 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "145.00"
+  },
+  {
+    "name": "two distinct books with 5 percent discount and cost 95 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "95.00"
+  },
+  {
+    "name": "three distinct books with 10 percent discount and cost 135 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "135.00"
+  },
+  {
+    "name": "four distinct books with 20 percent discount and cost 160 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "160.00"
+  },
+  {
+    "name": "five distinct books with 25 percent discount and cost 187.50 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      },
+      {
+        "bookId": 5,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "187.50"
+  },
+  {
+    "name": "two copies of each of five distinct books should cost 375 EUR under default discount table",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      },
+      {
+        "bookId": 4,
+        "quantity": 2
+      },
+      {
+        "bookId": 5,
+        "quantity": 2
+      }
+    ],
+    "expectedTotal": "375.00"
+  },
+  {
+    "name": "three copies of one book and one copy of another book should cost 195 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 3
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "195.00"
+  },
+  {
+    "name": "two copies of three books and one copy of two books should cost 320 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      },
+      {
+        "bookId": 5,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "320.00"
+  },
+  {
+    "name": "empty basket from json should cost 0 EUR",
+    "items": [],
+    "expectedTotal": "0.00"
+  },
+  {
+    "name": "three copies of one book should cost 150 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 3
+      }
+    ],
+    "expectedTotal": "150.00"
+  },
+  {
+    "name": "two copies each of two distinct books should cost 190 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      }
+    ],
+    "expectedTotal": "190.00"
+  },
+  {
+    "name": "two copies each of three distinct books should cost 270 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      }
+    ],
+    "expectedTotal": "270.00"
+  },
+  {
+    "name": "two copies each of four distinct books should cost 320 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      },
+      {
+        "bookId": 4,
+        "quantity": 2
+      }
+    ],
+    "expectedTotal": "320.00"
+  },
+  {
+    "name": "three copies each of two distinct books should cost 285 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 3
+      },
+      {
+        "bookId": 2,
+        "quantity": 3
+      }
+    ],
+    "expectedTotal": "285.00"
+  },
+  {
+    "name": "two copies of one book and one copy each of three others should cost 210 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "210.00"
+  },
+  {
+    "name": "100 copies each of two distinct books should cost 9500 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 100
+      },
+      {
+        "bookId": 2,
+        "quantity": 100
+      }
+    ],
+    "expectedTotal": "9500.00"
+  },
+  {
+    "name": "50 copies each of three distinct books should cost 6750 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 50
+      },
+      {
+        "bookId": 2,
+        "quantity": 50
+      },
+      {
+        "bookId": 3,
+        "quantity": 50
+      }
+    ],
+    "expectedTotal": "6750.00"
+  },
+  {
+    "name": "5000 copies of one book should cost 250000 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 5000
+      }
+    ],
+    "expectedTotal": "250000.00"
+  },
+  {
+    "name": "5000 copies each of two distinct books should cost 475000 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 5000
+      },
+      {
+        "bookId": 2,
+        "quantity": 5000
+      }
+    ],
+    "expectedTotal": "475000.00"
+  },
+  {
+    "name": "5000 copies each of five distinct books should cost 937500 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 5000
+      },
+      {
+        "bookId": 2,
+        "quantity": 5000
+      },
+      {
+        "bookId": 3,
+        "quantity": 5000
+      },
+      {
+        "bookId": 4,
+        "quantity": 5000
+      },
+      {
+        "bookId": 5,
+        "quantity": 5000
+      }
+    ],
+    "expectedTotal": "937500.00"
+  },
+  {
+    "name": "5000 4000 3000 2000 1000 copies across five books should cost 625000 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 5000
+      },
+      {
+        "bookId": 2,
+        "quantity": 4000
+      },
+      {
+        "bookId": 3,
+        "quantity": 3000
+      },
+      {
+        "bookId": 4,
+        "quantity": 2000
+      },
+      {
+        "bookId": 5,
+        "quantity": 1000
+      }
+    ],
+    "expectedTotal": "625000.00"
+  },
+  {
+    "name": "5000 5000 1 1 1 copies across five books should cost 475092.50 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 5000
+      },
+      {
+        "bookId": 2,
+        "quantity": 5000
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      },
+      {
+        "bookId": 5,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "475092.50"
+  },
+  {
+    "name": "optimal grouping should prefer 4 plus 4 over 5 plus 3 and cost 320 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 2
+      },
+      {
+        "bookId": 2,
+        "quantity": 2
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      },
+      {
+        "bookId": 5,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "320.00"
+  },
+  {
+    "name": "optimal grouping should prefer 4 plus 4 plus 2 over 5 plus 3 plus 2 and cost 415 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 3
+      },
+      {
+        "bookId": 2,
+        "quantity": 3
+      },
+      {
+        "bookId": 3,
+        "quantity": 2
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      },
+      {
+        "bookId": 5,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "415.00"
+  },
+  {
+    "name": "optimal grouping should prefer four groups of 4 over 5 5 3 3 and cost 640 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 4
+      },
+      {
+        "bookId": 2,
+        "quantity": 4
+      },
+      {
+        "bookId": 3,
+        "quantity": 4
+      },
+      {
+        "bookId": 4,
+        "quantity": 2
+      },
+      {
+        "bookId": 5,
+        "quantity": 2
+      }
+    ],
+    "expectedTotal": "640.00"
+  },
+  {
+    "name": "json supplied discount table should make four-book basket cost 140 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "140.00",
+    "discountTable": {
+      "2": 0.05,
+      "3": 0.10,
+      "4": 0.30,
+      "5": 0.25
+    }
+  }
+]

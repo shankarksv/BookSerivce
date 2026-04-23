@@ -1,0 +1,129 @@
+1. Purpose
+1 Build a Spring Boot REST API for software development books.
+2 Support book inventory, basket operations, and invoice pricing with discounts.
+3 Include security features.
+4 Follow Test Driven Development using JUnit and Mockito with API-level tests.
+
+2. Scope
+1 Book inventory CRUD APIs.
+2 Basket management APIs.
+3 Pricing and invoice API with discount rules.
+4 Basic authentication and JWT support.
+5 Persistence using Spring Data JPA and H2.
+6 UI frontend is not included.
+7 Payment gateway integration is not included.
+8 Advanced analytics and reporting are not included.
+9 Full user profile management is not included.
+
+3. Business Rules
+1 Base price of each book is 50 EUR.
+2 Discounts depend on the number of distinct books.
+3 2 books give 5 percent discount.
+4 3 books give 10 percent discount.
+5 4 books give 20 percent discount.
+6 5 books give 25 percent discount.
+7 System should apply the best discount.
+
+4. Technology Stack
+1 Java 17 (target Java 21).
+2 Spring Boot 3.x.
+3 Spring Data JPA with Hibernate and H2.
+4 Spring Security with Basic Auth and JWT.
+5 Maven build tool.
+6 Testing using JUnit 5, Mockito, MockMvc.
+
+5. Module Structure
+1 Book module with controller, service, repository, entity, dto.
+2 Basket module with controller, service, repository, entity, dto.
+3 Pricing module with controller, service, repository, entity, dto.
+4 Config module for pricing and security.
+
+6. Data Model
+1 Book has id, title, author, year, description, price.
+2 Basket has id, userId, status, items.
+3 BasketItem has id, basketId, bookId, quantity.
+4 DiscountConfig has id, groupSize, discountPercentage, active.
+5 One basket has many items.
+6 Each item belongs to one book.
+7 One active basket per user.
+
+7. Seed Data
+1 Default discount configurations for group sizes 2 to 5.
+2 Five preloaded books with price 50 EUR.
+
+8. API Design
+1 Get all books.
+2 Get book by ID.
+3 Create book.
+4 Update book.
+5 Delete book (blocked if in active basket).
+6 Add item to basket.
+7 Get basket.
+8 Update item quantity.
+9 Remove item.
+10 Clear basket.
+11 Calculate invoice using userId.
+12 Return totalPrice, discountBreakdown, invoice.
+
+9. Security Design
+1 Supports Basic authentication and JWT.
+2 Admin user with full access.
+3 Normal user with limited access.
+4 Admin can create, update, delete books.
+5 Both admin and user can view books, baskets, pricing.
+6 Stateless session and CSRF disabled.
+
+10. Pricing Algorithm
+1 Input includes bookId and quantity.
+2 Quantity must be greater than zero.
+3 BookId must not be null.
+4 Duplicate bookId not allowed.
+5 Uses dynamic programming to find best price.
+6 Fallback for large baskets.
+7 Discounts configurable from database.
+
+11. Testing Strategy
+1 Unit tests for pricing, book, basket, discount services.
+2 Integration tests using MockMvc.
+3 Security tests for roles.
+4 JSON-driven test cases.
+5 Total tests 53 with no failures.
+
+12. Iteration History
+1 Pricing tests for basic and discount cases.
+2 JSON-based pricing tests added.
+3 Edge cases and invalid inputs tested.
+4 Performance and grouping scenarios added.
+5 Discount configuration made dynamic.
+6 Book CRUD tests added.
+7 Basket add, update, delete tests added.
+8 Invoice API response tests added.
+9 Security rules implemented and tested.
+10 Data setup with default discounts and books.
+
+13. Requirement Coverage
+1 Book CRUD completed.
+2 Basket operations completed.
+3 Pricing API completed.
+4 Discount configuration completed.
+5 Security setup completed.
+6 Test coverage completed.
+7 User module pending.
+8 OAuth login pending.
+9 Swagger docs pending.
+10 Performance testing pending.
+11 Caching pending.
+12 Production DB setup pending.
+
+14. Non Functional Requirements
+1 Pricing response should be under 500 ms.
+2 Proper error handling.
+3 Secure data handling.
+4 Scalable design.
+
+15. Next Steps
+1 Add user module with validation.
+2 Add Swagger documentation.
+3 Add caching for pricing.
+4 Add JWT token generation.
+5 Setup production database and migrations.

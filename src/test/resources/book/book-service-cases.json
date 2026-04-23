@@ -1,0 +1,67 @@
+[
+  {
+    "name": "book_create_default_price",
+    "type": "create",
+    "savedId": 101,
+    "request": {
+      "title": "  Clean Code  ",
+      "author": "  Robert C. Martin  ",
+      "year": 2008,
+      "description": "pragmatic coding"
+    },
+    "expected": {
+      "title": "Clean Code",
+      "author": "Robert C. Martin",
+      "year": 2008,
+      "price": "50.00"
+    }
+  },
+  {
+    "name": "book_update_existing",
+    "type": "update",
+    "bookId": 5,
+    "existing": {
+      "title": "Old",
+      "author": "Author",
+      "year": 2001,
+      "description": "desc",
+      "price": "50.00"
+    },
+    "request": {
+      "title": "  New Title ",
+      "author": " New Author ",
+      "year": 2005,
+      "description": "new desc"
+    },
+    "expected": {
+      "title": "New Title",
+      "author": "New Author",
+      "year": 2005
+    }
+  },
+  {
+    "name": "book_delete_conflict_active_basket",
+    "type": "delete",
+    "bookId": 7,
+    "delete": {
+      "existsInInventory": true,
+      "existsInActiveBasket": true
+    },
+    "expected": {
+      "errorStatus": 409,
+      "deleteCallCount": 0
+    }
+  },
+  {
+    "name": "book_delete_success",
+    "type": "delete",
+    "bookId": 9,
+    "delete": {
+      "existsInInventory": true,
+      "existsInActiveBasket": false
+    },
+    "expected": {
+      "deleteCallCount": 1
+    }
+  }
+]

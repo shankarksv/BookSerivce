@@ -1,0 +1,21 @@
+# Compiled files
+*.class
+
+# Logs
+*.log
+
+# Maven target folder
+target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.m2repo/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+*workspace
+docs/technical-design.txt
