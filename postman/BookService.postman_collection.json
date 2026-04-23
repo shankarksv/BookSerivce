@@ -1,0 +1,477 @@
+{
+  "info": {
+    "_postman_id": "f4af26d6-4d5f-4626-a1cc-e20dd6302b71",
+    "name": "BookService APIs",
+    "description": "Postman collection for BookService (Book, Basket, Pricing APIs). Uses Basic Auth.\\n\\nDefault test users:\\n- admin / admin123\\n- user / user123",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Book APIs",
+      "item": [
+        {
+          "name": "Get All Books",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/books",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "books"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Book By Id",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/books/{{bookId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                "{{bookId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Book (Admin)",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{adminUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{adminPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Clean Architecture\",\n  \"author\": \"Robert C. Martin\",\n  \"year\": 2017,\n  \"description\": \"Software architecture guide\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/books",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "books"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Book (Admin)",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{adminUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{adminPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Clean Architecture (2nd Edition)\",\n  \"author\": \"Robert C. Martin\",\n  \"year\": 2020,\n  \"description\": \"Updated edition\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/books/{{bookId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                "{{bookId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Book (Admin)",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{adminUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{adminPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/books/{{bookId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "books",
+                "{{bookId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Basket APIs",
+      "item": [
+        {
+          "name": "Get Basket",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/baskets/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "baskets",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Book To Basket",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookId\": {{bookId}},\n  \"quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/baskets/{{userId}}/add",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "baskets",
+                "{{userId}}",
+                "add"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Basket Item Quantity",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/baskets/{{userId}}/items/{{bookId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "baskets",
+                "{{userId}}",
+                "items",
+                "{{bookId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Basket Item",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/baskets/{{userId}}/items/{{bookId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "baskets",
+                "{{userId}}",
+                "items",
+                "{{bookId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Basket",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/baskets/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "baskets",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pricing APIs",
+      "item": [
+        {
+          "name": "Calculate Invoice",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUsername}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPassword}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": {{userId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pricing/calculate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pricing",
+                "calculate"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "adminUsername",
+      "value": "admin"
+    },
+    {
+      "key": "adminPassword",
+      "value": "admin123"
+    },
+    {
+      "key": "userUsername",
+      "value": "user"
+    },
+    {
+      "key": "userPassword",
+      "value": "user123"
+    },
+    {
+      "key": "bookId",
+      "value": "1"
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    }
+  ]
+}

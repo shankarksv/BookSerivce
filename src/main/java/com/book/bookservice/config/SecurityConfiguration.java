@@ -1,4 +1,5 @@
 package com.book.bookservice.config;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,13 +28,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/api/baskets/**", "/api/pricing/**").hasAnyRole("ADMIN", "USER")
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()));
         return http.build();
@@ -49,8 +44,7 @@ public class SecurityConfiguration {
                 User.withUsername("user")
                         .password(passwordEncoder.encode("user123"))
                         .roles("USER")
-                        .build()
-        );
+                        .build());
     }
 
     @Bean

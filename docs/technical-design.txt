@@ -1,342 +1,129 @@
-Tech Stack:
-Java version: 21
-Spring boot version 3.5
-maven tool
-
-
-Modules
-
-Book inventory management
-User mgmt
-Basket mgmt
-Authentication - jwt/basic
-Persistence with Spring Data JPA and H2
-Unit and integration testing using JUnit 5 and Mockito
-Swagger/OpenAPI documentation
-
-
-Entities Required
-
-1. Book
-- id: Long
-- title: String
-- author: String
-- year: Integer
-- description: String
-- price: BigDecimal
-
-Notes:
-- Each book price is fixed at 50 EUR
-- title is required
-- author is required
-- year must be valid
-
-
-2. Basket
-- id: Long
-- userId: Long
-- status: String
-- createdAt: LocalDateTime
-- updatedAt: LocalDateTime
-- items: List<BasketItem>
-
-Notes:
-- One active basket per user is enough for the initial version
-- status can start with ACTIVE and CLEARED
-
-
-3. BasketItem
-- id: Long
-- basketId: Long
-- bookId: Long
-- quantity: Integer
-
-Notes:
-- quantity must be greater than 0
-- one basket item per distinct book inside a basket
-
-
-Relationships
-
-- One basket belongs to one user
-- One basket has many basket items
-- One basket item references one book
-
-
-Book Inventory Controller
-
-Controller Name:
-- BookController
-
-Base Path:
-- /api/books
-
-Endpoints:
-
-1. GET /api/books
-- Purpose: get all books in inventory
-- Response: list of books
-
-2. GET /api/books/{id}
-- Purpose: get one book by id
-- Response: single book
-
-3. POST /api/books
-- Purpose: create a new book
-- Request Body:
-  - title
-  - author
-  - year
-  - description
-- Response: created book
-- Status: 201 Created
-
-4. PUT /api/books/{id}
-- Purpose: update book details
-- Request Body:
-  - title
-  - author
-  - year
-  - description
-- Response: updated book
-- Status: 200 OK
-
-5. DELETE /api/books/{id}
-- Purpose: delete a book from inventory
-- Rule: do not delete if the book is present in an active basket
-- Status: 204 No Content
-
-
-Book Inventory Service Methods
-
-- getAllBooks()
-- getBookById(Long id)
-- createBook(CreateBookRequest request)
-- updateBook(Long id, UpdateBookRequest request)
-- deleteBook(Long id)
-
-
-Basic Authentication
-
-Goal:
-- secure APIs using Spring Security basic authentication for the initial version
-
-Initial approach:
-- Use Spring Security with in-memory users for development/testing
-- Send username and password in Authorization header using Basic Auth
-- Passwords should be encoded using BCryptPasswordEncoder
-
-Roles:
-- ADMIN
-  - access to create, update, and delete books
-- USER
-  - access to read books and manage basket
-
-Basic auth design:
-- SecurityConfig class required
-- Configure authentication provider for in-memory users
-- Configure endpoint authorization rules
-- Disable CSRF for stateless REST API if needed
-
-Example access rules:
-- GET /api/books -> ADMIN, USER
-- POST /api/books -> ADMIN
-- PUT /api/books/{id} -> ADMIN
-- DELETE /api/books/{id} -> ADMIN
-
-
-Possible DTOs
-
-Book DTOs:
-- CreateBookRequest
-- UpdateBookRequest
-- BookResponse
-
-Basket DTOs:
-- AddBasketItemRequest
-- UpdateBasketItemRequest
-- BasketItemResponse
-- BasketResponse
-
-
-Simple TDD Test Sequence
-
-We are building the pricing logic in small steps.
-
-Sequence followed till now:
-
-1. Add a test for 1 book
-- Input: 1 book with quantity 1
-- Expected result: 50 EUR
-
-2. Add a test for multiple books without discount
-- Input: book 1 quantity 2, book 2 quantity 1
-- Expected result: 150 EUR
-
-3. Add a test for 2 distinct books
-- Input: 2 different books, quantity 1 each
-- Expected result: 95 EUR
-- Rule added: 5 percent discount
-
-4. Add a test for 3 distinct books
-- Input: 3 different books, quantity 1 each
-- Expected result: 135 EUR
-- Rule added: 10 percent discount
-
-5. Add a test for 4 distinct books
-- Input: 4 different books, quantity 1 each
-- Expected result: 160 EUR
-- Rule added: 20 percent discount
-
-6. Add a test for 5 distinct books
-- Input: 5 different books, quantity 1 each
-- Expected result: 187.50 EUR
-- Rule added: 25 percent discount
-
-7. Add failure case for invalid quantity
-- Input: any book with quantity 0
-- Expected result: validation error
-
-8. Add failure case for complex basket
-- Input: 2 copies of each of 5 distinct books
-- Expected result: 320 EUR
-- This test is important because it needs better grouping logic
-
-
-Iteration-wise Test Cases Added
-
-Iteration 1
-- 1 book should cost 50 EUR
-- multiple books without discount should cost 150 EUR
-
-Iteration 2
-- 2 distinct books should cost 95 EUR
-
-Iteration 3
-- JSON based pricing test input support added
-- single book from JSON = 50 EUR
-- mixed basket from JSON = 150 EUR
-- 2 distinct books from JSON = 95 EUR
-
-Iteration 4
-- 3 distinct books = 135 EUR
-
-Iteration 5
-- 4 distinct books = 160 EUR
-
-Iteration 6
-- 5 distinct books = 187.50 EUR
-
-Iteration 7
-- zero quantity should fail
-- 2 copies of each of 5 distinct books should cost 320 EUR
-
-Iteration 8
-- negative quantity should fail
-- empty basket should return 0 EUR
-
-Iteration 9
-- basket line with missing bookId should fail
-- duplicate basket lines for same bookId should fail
-
-Iteration 10
-- 3 copies of one book and 1 copy of another book should cost 195 EUR
-
-Iteration 11
-- basket line with missing bookId should fail
-- duplicate basket lines for same bookId should fail
-
-Iteration 12
-- 2 copies of 3 books and 1 copy of 2 books should cost 322.50 EUR
-
-
-Way Forward In Simple Language
-
-1. First fix the quantity validation failure
-- Quantity should not be 0 or negative
-
-2. Then fix the 320 EUR pricing case
-- Current logic only works for simple distinct groups
-- Next implementation needs grouping of books into sets
-
-3. After pricing is stable, move to next layers
-- Book service
-- Basket service
-- User service
-- Controllers
-- Database
-- Authentication
-
-
-Latest Test Run Status
-
-Passed test cases
-- 1 book should cost 50 EUR
-- multiple books without discount should cost 150 EUR
-- 2 distinct books should cost 95 EUR
-- zero quantity should fail
-- negative quantity should fail
-- empty basket should return 0 EUR
-- single book from JSON = 50 EUR
-- mixed basket from JSON = 150 EUR
-- 2 distinct books from JSON = 95 EUR
-- 3 distinct books from JSON = 135 EUR
-- 4 distinct books from JSON = 160 EUR
-- 5 distinct books from JSON = 187.50 EUR
-- 2 copies of each of 5 distinct books should cost 320 EUR
-
-Failed test cases
-- basket line with missing bookId should fail
-- duplicate basket lines for same bookId should fail
-- 3 copies of one book and 1 copy of another book should cost 195 EUR
-
-Current test count
-- total tests run: 16
-- passed: 13
-- failed: 3
-
-Iteration 1
-Right now the latest failing cases are:
-
-missing bookId
-duplicate bookId lines
-3 copies of one book and 1 copy of another => expected 195.00
-2 copies of 3 books and 1 copy of 2 books => expected 322.50
-
-
-Variable Discount Pricing Refactor
-
-Current pricing design
-- Pricing now uses a configurable discount table by group size
-- Default discount table:
-  - 2 books -> 5 percent
-  - 3 books -> 10 percent
-  - 4 books -> 20 percent
-  - 5 books -> 25 percent
-- PricingService no longer uses a hardcoded 320 EUR exception
-- BasketItemLine is still the pricing input model for unit testing and algorithm work
-
-Optimal pricing approach
-- For small and medium baskets, pricing uses a memoized dynamic programming solver
-- The solver normalizes remaining quantities into a sorted quantity state
-- The solver tries all valid distinct-book groupings and keeps the minimum total
-- This makes the engine choose the best customer discount for tested grouping combinations
-- For very large baskets, a layered fallback is still used to keep runtime practical
-
-Persistence hooks for future work
-- DiscountConfig added as a pricing domain shape
-- DiscountPolicyProvider added as the contract for loading active discounts
-- InMemoryDiscountPolicyProvider added as the first implementation
-- This keeps pricing logic plain Java for now, while giving us a clean seam for future DB-backed discount config
-
-Variable discount test coverage added
-- same basket priced with default and custom discount tables
-- missing discount table entry falls back to zero discount for that group size
-- stronger 4-book discount changes total as expected
-- JSON pricing cases can now optionally pass a discount table
-
-Latest pricing status after refactor
-- total tests run: 38
-- failures: 0
-- errors: 0
-- build status: SUCCESS
+1. Purpose
+1 Build a Spring Boot REST API for software development books.
+2 Support book inventory, basket operations, and invoice pricing with discounts.
+3 Include security features.
+4 Follow Test Driven Development using JUnit and Mockito with API-level tests.
+
+2. Scope
+1 Book inventory CRUD APIs.
+2 Basket management APIs.
+3 Pricing and invoice API with discount rules.
+4 Basic authentication and JWT support.
+5 Persistence using Spring Data JPA and H2.
+6 UI frontend is not included.
+7 Payment gateway integration is not included.
+8 Advanced analytics and reporting are not included.
+9 Full user profile management is not included.
+
+3. Business Rules
+1 Base price of each book is 50 EUR.
+2 Discounts depend on the number of distinct books.
+3 2 books give 5 percent discount.
+4 3 books give 10 percent discount.
+5 4 books give 20 percent discount.
+6 5 books give 25 percent discount.
+7 System should apply the best discount.
+
+4. Technology Stack
+1 Java 17 (target Java 21).
+2 Spring Boot 3.x.
+3 Spring Data JPA with Hibernate and H2.
+4 Spring Security with Basic Auth and JWT.
+5 Maven build tool.
+6 Testing using JUnit 5, Mockito, MockMvc.
+
+5. Module Structure
+1 Book module with controller, service, repository, entity, dto.
+2 Basket module with controller, service, repository, entity, dto.
+3 Pricing module with controller, service, repository, entity, dto.
+4 Config module for pricing and security.
+
+6. Data Model
+1 Book has id, title, author, year, description, price.
+2 Basket has id, userId, status, items.
+3 BasketItem has id, basketId, bookId, quantity.
+4 DiscountConfig has id, groupSize, discountPercentage, active.
+5 One basket has many items.
+6 Each item belongs to one book.
+7 One active basket per user.
+
+7. Seed Data
+1 Default discount configurations for group sizes 2 to 5.
+2 Five preloaded books with price 50 EUR.
+
+8. API Design
+1 Get all books.
+2 Get book by ID.
+3 Create book.
+4 Update book.
+5 Delete book (blocked if in active basket).
+6 Add item to basket.
+7 Get basket.
+8 Update item quantity.
+9 Remove item.
+10 Clear basket.
+11 Calculate invoice using userId.
+12 Return totalPrice, discountBreakdown, invoice.
+
+9. Security Design
+1 Supports Basic authentication and JWT.
+2 Admin user with full access.
+3 Normal user with limited access.
+4 Admin can create, update, delete books.
+5 Both admin and user can view books, baskets, pricing.
+6 Stateless session and CSRF disabled.
+
+10. Pricing Algorithm
+1 Input includes bookId and quantity.
+2 Quantity must be greater than zero.
+3 BookId must not be null.
+4 Duplicate bookId not allowed.
+5 Uses dynamic programming to find best price.
+6 Fallback for large baskets.
+7 Discounts configurable from database.
+
+11. Testing Strategy
+1 Unit tests for pricing, book, basket, discount services.
+2 Integration tests using MockMvc.
+3 Security tests for roles.
+4 JSON-driven test cases.
+5 Total tests 53 with no failures.
+
+12. Iteration History
+1 Pricing tests for basic and discount cases.
+2 JSON-based pricing tests added.
+3 Edge cases and invalid inputs tested.
+4 Performance and grouping scenarios added.
+5 Discount configuration made dynamic.
+6 Book CRUD tests added.
+7 Basket add, update, delete tests added.
+8 Invoice API response tests added.
+9 Security rules implemented and tested.
+10 Data setup with default discounts and books.
+
+13. Requirement Coverage
+1 Book CRUD completed.
+2 Basket operations completed.
+3 Pricing API completed.
+4 Discount configuration completed.
+5 Security setup completed.
+6 Test coverage completed.
+7 User module pending.
+8 OAuth login pending.
+9 Swagger docs pending.
+10 Performance testing pending.
+11 Caching pending.
+12 Production DB setup pending.
+
+14. Non Functional Requirements
+1 Pricing response should be under 500 ms.
+2 Proper error handling.
+3 Secure data handling.
+4 Scalable design.
+
+15. Next Steps
+1 Add user module with validation.
+2 Add Swagger documentation.
+3 Add caching for pricing.
+4 Add JWT token generation.
+5 Setup production database and migrations.
