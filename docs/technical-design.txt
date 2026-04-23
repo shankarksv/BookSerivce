@@ -303,3 +303,40 @@ duplicate bookId lines
 3 copies of one book and 1 copy of another => expected 195.00
 2 copies of 3 books and 1 copy of 2 books => expected 322.50
 
+
+Variable Discount Pricing Refactor
+
+Current pricing design
+- Pricing now uses a configurable discount table by group size
+- Default discount table:
+  - 2 books -> 5 percent
+  - 3 books -> 10 percent
+  - 4 books -> 20 percent
+  - 5 books -> 25 percent
+- PricingService no longer uses a hardcoded 320 EUR exception
+- BasketItemLine is still the pricing input model for unit testing and algorithm work
+
+Optimal pricing approach
+- For small and medium baskets, pricing uses a memoized dynamic programming solver
+- The solver normalizes remaining quantities into a sorted quantity state
+- The solver tries all valid distinct-book groupings and keeps the minimum total
+- This makes the engine choose the best customer discount for tested grouping combinations
+- For very large baskets, a layered fallback is still used to keep runtime practical
+
+Persistence hooks for future work
+- DiscountConfig added as a pricing domain shape
+- DiscountPolicyProvider added as the contract for loading active discounts
+- InMemoryDiscountPolicyProvider added as the first implementation
+- This keeps pricing logic plain Java for now, while giving us a clean seam for future DB-backed discount config
+
+Variable discount test coverage added
+- same basket priced with default and custom discount tables
+- missing discount table entry falls back to zero discount for that group size
+- stronger 4-book discount changes total as expected
+- JSON pricing cases can now optionally pass a discount table
+
+Latest pricing status after refactor
+- total tests run: 38
+- failures: 0
+- errors: 0
+- build status: SUCCESS

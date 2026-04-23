@@ -104,7 +104,7 @@
     "expectedTotal": "187.50"
   },
   {
-    "name": "two copies of each of five distinct books should cost 320 EUR",
+    "name": "two copies of each of five distinct books should cost 375 EUR under default discount table",
     "items": [
       {
         "bookId": 1,
@@ -127,7 +127,7 @@
         "quantity": 2
       }
     ],
-    "expectedTotal": "320.00"
+    "expectedTotal": "375.00"
   },
   {
     "name": "three copies of one book and one copy of another book should cost 195 EUR",
@@ -485,5 +485,33 @@
       }
     ],
     "expectedTotal": "640.00"
+  },
+  {
+    "name": "json supplied discount table should make four-book basket cost 140 EUR",
+    "items": [
+      {
+        "bookId": 1,
+        "quantity": 1
+      },
+      {
+        "bookId": 2,
+        "quantity": 1
+      },
+      {
+        "bookId": 3,
+        "quantity": 1
+      },
+      {
+        "bookId": 4,
+        "quantity": 1
+      }
+    ],
+    "expectedTotal": "140.00",
+    "discountTable": {
+      "2": 0.05,
+      "3": 0.10,
+      "4": 0.30,
+      "5": 0.25
+    }
   }
 ]
