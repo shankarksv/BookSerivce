@@ -1,0 +1,15 @@
+Tech Stack:
+Java version: 21
+Spring boot version 3.5
+maven tool
+
+
+Modules
+
+Book inventory management
+User mgmt
+Basket mgmt
+Authentication - jwt/basic
+Persistence with Spring Data JPA and H2
+Unit and integration testing using JUnit 5 and Mockito
+Swagger/OpenAPI documentation
