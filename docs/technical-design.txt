@@ -13,3 +13,147 @@ Authentication - jwt/basic
 Persistence with Spring Data JPA and H2
 Unit and integration testing using JUnit 5 and Mockito
 Swagger/OpenAPI documentation
+
+
+Entities Required
+
+1. Book
+- id: Long
+- title: String
+- author: String
+- year: Integer
+- description: String
+- price: BigDecimal
+
+Notes:
+- Each book price is fixed at 50 EUR
+- title is required
+- author is required
+- year must be valid
+
+
+2. Basket
+- id: Long
+- userId: Long
+- status: String
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- items: List<BasketItem>
+
+Notes:
+- One active basket per user is enough for the initial version
+- status can start with ACTIVE and CLEARED
+
+
+3. BasketItem
+- id: Long
+- basketId: Long
+- bookId: Long
+- quantity: Integer
+
+Notes:
+- quantity must be greater than 0
+- one basket item per distinct book inside a basket
+
+
+Relationships
+
+- One basket belongs to one user
+- One basket has many basket items
+- One basket item references one book
+
+
+Book Inventory Controller
+
+Controller Name:
+- BookController
+
+Base Path:
+- /api/books
+
+Endpoints:
+
+1. GET /api/books
+- Purpose: get all books in inventory
+- Response: list of books
+
+2. GET /api/books/{id}
+- Purpose: get one book by id
+- Response: single book
+
+3. POST /api/books
+- Purpose: create a new book
+- Request Body:
+  - title
+  - author
+  - year
+  - description
+- Response: created book
+- Status: 201 Created
+
+4. PUT /api/books/{id}
+- Purpose: update book details
+- Request Body:
+  - title
+  - author
+  - year
+  - description
+- Response: updated book
+- Status: 200 OK
+
+5. DELETE /api/books/{id}
+- Purpose: delete a book from inventory
+- Rule: do not delete if the book is present in an active basket
+- Status: 204 No Content
+
+
+Book Inventory Service Methods
+
+- getAllBooks()
+- getBookById(Long id)
+- createBook(CreateBookRequest request)
+- updateBook(Long id, UpdateBookRequest request)
+- deleteBook(Long id)
+
+
+Basic Authentication
+
+Goal:
+- secure APIs using Spring Security basic authentication for the initial version
+
+Initial approach:
+- Use Spring Security with in-memory users for development/testing
+- Send username and password in Authorization header using Basic Auth
+- Passwords should be encoded using BCryptPasswordEncoder
+
+Roles:
+- ADMIN
+  - access to create, update, and delete books
+- USER
+  - access to read books and manage basket
+
+Basic auth design:
+- SecurityConfig class required
+- Configure authentication provider for in-memory users
+- Configure endpoint authorization rules
+- Disable CSRF for stateless REST API if needed
+
+Example access rules:
+- GET /api/books -> ADMIN, USER
+- POST /api/books -> ADMIN
+- PUT /api/books/{id} -> ADMIN
+- DELETE /api/books/{id} -> ADMIN
+
+
+Possible DTOs
+
+Book DTOs:
+- CreateBookRequest
+- UpdateBookRequest
+- BookResponse
+
+Basket DTOs:
+- AddBasketItemRequest
+- UpdateBasketItemRequest
+- BasketItemResponse
+- BasketResponse
